@@ -8,15 +8,25 @@ Les règles sont simples :
 Essayez de battre l'ordinateur ! 🎯
 """)
 
-func validateInput(_ input: String?) -> Int? {
+// Fonction pour valider le nombre de tours
+func validateNumberOfRounds(_ input: String?) -> Int? {
     if let input = input, let numberOfRounds = Int(input), numberOfRounds > 0 {
         return numberOfRounds // Retourne le nombre valide
     }
-    return nil // Retourne nil si la vérification échoue
+    return nil // Retourne nil si la validation échoue
 }
 
+// Fonction pour valider le choix de l'utilisateur
+func validateUserChoice(_ input: String?, validChoices: [String]) -> String? {
+    if let input = input?.uppercased(), validChoices.contains(input) {
+        return input // Retourne le choix valide
+    }
+    return nil // Retourne nil si la validation échoue
+}
+
+// Fonction pour déterminer le gagnant d'un tour
 func findWinner(_ userChoice: String, _ cpuChoice: String) -> String {
-    if (userChoice == cpuChoice) {
+    if userChoice == cpuChoice {
         return "Egalite"
     }
     if (userChoice == "R" && cpuChoice == "C") ||
@@ -24,50 +34,48 @@ func findWinner(_ userChoice: String, _ cpuChoice: String) -> String {
        (userChoice == "P" && cpuChoice == "R") {
         return "Joueur"
     }
-     return "CPU"
+    return "CPU"
 }
 
-var userScore = 0;
-var cpuScore = 0;
-var numberOfRounds = 0;
+// Initialisation des variables
+let choices = ["R", "P", "C"] // Les choix possibles
+var userScore = 0
+var cpuScore = 0
+var numberOfRounds = 0
 
-// Partie principale
+// Partie principale : demander le nombre de tours
 print("\nCombien de tours voulez-vous jouer ?")
-if let input = readLine(), let numberOfRounds = validateInput(input) {
+if let input = readLine(), let validRounds = validateNumberOfRounds(input) {
+    numberOfRounds = validRounds
     print("La partie se fera en \(numberOfRounds) tours.")
 } else {
     print("Veuillez entrer un nombre de tours valide et supérieur à 0.")
+    exit(1) // Quitte le programme en cas d'erreur
 }
 
-let choices = ["R","P","C"];
-
-var userChoice = "";
-var cpuChoice = "";
-
-for round in 1...numberOfRounds{
-  print("\n--- Tour \(round) ---")
-
-// userChoice
-print("Faites votre choix : R pour Roche, P pour Papier, C pour Ciseaux.")
-if let userInput = readLine()?.uppercased() {
-    if choices.contains(userInput) {
-        let userChoice = userInput
-        print("Vous avez choisi : \(userChoice)")
-    } else {
-        print("Choix invalide. Veuillez entrer R, P ou C.")
+// Boucle pour chaque tour
+for round in 1...numberOfRounds {
+    print("\n--- Tour \(round) ---")
+    
+    // Choix de l'utilisateur
+    var userChoice = ""
+    while true {
+        print("Faites votre choix : R pour Roche, P pour Papier, C pour Ciseaux.")
+        if let validChoice = validateUserChoice(readLine(), validChoices: choices) {
+            userChoice = validChoice
+            print("Vous avez choisi : \(userChoice)")
+            break // Sortir de la boucle si l'entrée est valide
+        } else {
+            print("Choix invalide. Veuillez entrer R, P ou C.")
+        }
     }
-} else {
-    print("Aucune saisie détectée.")
-}
-
-// cpuChoice
-if let cpuChoice = choices.randomElement(){
-        print("L'ordinateur a choisi  : \(cpuChoice)")    
-}
-
-
-// Determiner le gagnant du tour
-let result = findWinner(userChoice,cpuChoice)
+    
+    // Choix de l'ordinateur
+    let cpuChoice = choices.randomElement()!
+    print("L'ordinateur a choisi : \(cpuChoice)")
+    
+    // Déterminer le gagnant du tour
+    let result = findWinner(userChoice, cpuChoice)
     switch result {
     case "Joueur":
         print("\n✅ Vous avez gagné ce tour !")
@@ -78,17 +86,20 @@ let result = findWinner(userChoice,cpuChoice)
     default:
         print("\n🤝 Ce tour est une égalité.")
     }
-// Afficher les scores après chaque tour
+    
+    // Afficher les scores après chaque tour
     print("Score actuel - Vous : \(userScore) | Ordinateur : \(cpuScore)")
 
-		print("\n===============================================================")
+    print("\n===============================================================")
+
 }
+
 // Résultat final
 print("\n--- Résultat final ---")
 if userScore > cpuScore {
-		print("🎉 Félicitations ! Vous avez gagné avec un score de \(userScore) contre \(cpuScore).")
+    print("🎉 Félicitations ! Vous avez gagné avec un score de \(userScore) contre \(cpuScore).")
 } else if cpuScore > userScore {
-		print("😞 L'ordinateur a gagné avec un score de \(cpuScore) contre \(userScore).")
+    print("😞 L'ordinateur a gagné avec un score de \(cpuScore) contre \(userScore).")
 } else {
-		print("🤝 C'est une égalité parfaite avec un score de \(userScore) partout.")
+    print("🤝 C'est une égalité parfaite avec un score de \(userScore) partout.")
 }

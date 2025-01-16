@@ -1,6 +1,11 @@
 import "dart:io";
 
+import "BankAccount.dart";
+import "BankManager.dart";
+
 void main() async {
+  BankManager manager = BankManager();
+
   while (true) {
     print("--- Gestion de comptes Bancaires ---");
     print("1. Créer un compte");
@@ -21,6 +26,9 @@ void main() async {
         var initialDeposit = double.tryParse(stdin.readLineSync() ?? "") ?? -1;
 
         // ÉCRIRE LE CODE POUR CRÉER COMPTE
+        BankAccount account = BankAccount(name, initialDeposit);
+        manager.createAccount(name, initialDeposit);
+        account.displayBalance();
 
         break;
 
@@ -29,12 +37,18 @@ void main() async {
         var name = stdin.readLineSync() ?? "";
 
         // ÉCRIRE LE CODE POUR TROUVER COMPTE AVEC NOM, si pas trouvé (introuvable)
+        BankAccount? account = manager.findAccount(name);
+        if (account == null) {
+          print("Compte introuvable");
+          break;
+        }
 
         // ÉCRIRE CODE POUR DÉPOSER MONTANT
         stdout.write("Entrez le montant à déposer : ");
         var amount = double.tryParse(stdin.readLineSync() ?? "") ?? -1;
 
         // Écrire l'appel de la méthode
+        account.deposit(amount);
 
         break;
 
@@ -43,12 +57,16 @@ void main() async {
         var name = stdin.readLineSync() ?? "";
 
         // ÉCRIRE LE CODE POUR TROUVER COMPTE AVEC NOM, si pas trouvé (introuvable)
-
-        // ÉCRIRE CODE POUR RETIRER MONTANT
+        BankAccount? account = manager.findAccount(name);
+        if (account == null) {
+          print("Compte introuvable");
+          break;
+        } // ÉCRIRE CODE POUR RETIRER MONTANT
         stdout.write("Entrez le montant à retirer : ");
         var amount = double.tryParse(stdin.readLineSync() ?? "") ?? -1;
 
         // Écrire l'appel de la méthode
+        account.withdraw(amount);
 
         break;
 
@@ -57,13 +75,18 @@ void main() async {
         var name = stdin.readLineSync() ?? "";
 
         // ÉCRIRE LE CODE POUR TROUVER COMPTE AVEC NOM, si pas trouvé (Introuvable)
-
+        BankAccount? account = manager.findAccount(name);
+        if (account == null) {
+          print("Compte introuvable");
+          break;
+        }
         // ÉCRIRE LE CODE POUR AFFICHER BALANCE DU COMPTE
+        print(account.balance);
         break;
 
       case "5":
         // ÉCRIRE LE CODE POUR ENREGISTRER TRANSACTION (MÉTHODE QUI SIMULE UN ENREGISTREMENT À UN FICHIER)
-
+        manager.saveTransactions();
         break;
 
       case "6":

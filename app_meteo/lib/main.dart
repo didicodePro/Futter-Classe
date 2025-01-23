@@ -38,21 +38,27 @@ class AppMeteoAcceuil extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
         centerTitle: true,
+        backgroundColor: Colors.yellow,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(0.0),
         child: Container(
 
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.5, 1],
-              colors: [
-                Colors.blue,
-                Colors.grey,
-              ]
-            )
+            image: DecorationImage(
+              image: AssetImage("../images/weather.jpg"),
+              fit: BoxFit.cover
+              
+            ),
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            //   stops: [0.5, 1],
+            //   colors: [
+            //     Colors.blue,
+            //     Colors.grey,
+            //   ]
+            // )
           ),
 
           child: Center(
@@ -87,3 +93,5 @@ class AppMeteoAcceuil extends StatelessWidget {
     );
   }
 }
+
+//http://localhost:64519/

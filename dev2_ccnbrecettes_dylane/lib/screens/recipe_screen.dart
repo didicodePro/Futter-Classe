@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/recipe_card.dart';
 import 'add_recipe_screen.dart';
 import '../theme/app_colors.dart';
+import 'favorites_screen.dart';
 
 class RecipeScreen extends StatefulWidget {
   const RecipeScreen({super.key});
@@ -16,8 +17,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
     {"title": "Pizza maison", "description": "Pizza à la mozzarella", "category": "Plat"},
   ];
 
-  Set<String> favoriteRecipes = {};
-  int _selectedIndex = 0; // 0 = Toutes les recettes, 1 = Favoris
+  Set<String> favoriteRecipes = {}; // Stocke les titres des favoris
 
   void _toggleFavorite(String title) {
     setState(() {
@@ -50,17 +50,37 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> displayedRecipes =
-        _selectedIndex == 0 ? recipes : recipes.where((recipe) => favoriteRecipes.contains(recipe["title"])).toList();
+    // Filtrer les recettes favorites
+    final favoriteRecipesList = recipes
+        .where((recipe) => favoriteRecipes.contains(recipe["title"]))
+        .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("RECETTES CCNB")),
+      appBar: AppBar(
+        title: const Text("RECETTES CCNB"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoritesScreen(
+                    favoriteRecipes: favoriteRecipesList,
+                    onToggleFavorite: _toggleFavorite,
+                  ),
+                ),
+              );
+            },
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: ListView.builder(
-          itemCount: displayedRecipes.length,
+          itemCount: recipes.length,
           itemBuilder: (context, index) {
-            final recipe = displayedRecipes[index];
+            final recipe = recipes[index];
             final isFavorite = favoriteRecipes.contains(recipe["title"]);
 
             return RecipesCard(
@@ -77,14 +97,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
         onPressed: _showAddRecipeDialog,
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Toutes"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favoris"),
-        ],
       ),
     );
   }

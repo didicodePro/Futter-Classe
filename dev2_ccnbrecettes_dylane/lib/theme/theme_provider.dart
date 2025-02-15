@@ -18,9 +18,9 @@ class ThemeProvider with ChangeNotifier {
     brightness: Brightness.light,
     primaryColor: AppColors.lightPrimary,
     scaffoldBackgroundColor: AppColors.lightBackground,
-    cardColor: AppColors.lightCard,
+    cardColor: AppColors.lightBackground,
     textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: AppColors.lightText),
+      bodyMedium: TextStyle(color: AppColors.lightTextPrimary),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.lightPrimary,
@@ -32,9 +32,9 @@ class ThemeProvider with ChangeNotifier {
     brightness: Brightness.dark,
     primaryColor: AppColors.darkPrimary,
     scaffoldBackgroundColor: AppColors.darkBackground,
-    cardColor: AppColors.darkCard,
+    cardColor: AppColors.darkBackground,
     textTheme: const TextTheme(
-      bodyMedium: TextStyle(color: AppColors.darkText),
+      bodyMedium: TextStyle(color: AppColors.darkTextPrimary),
     ),
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.darkPrimary,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_text_styles.dart';
+import '../theme/app_colors.dart';  
 
 class AddRecipeScreen extends StatefulWidget {
   final Function(String, String, String) onRecipeAdded;
@@ -26,7 +27,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Ajouter une recette", style: AppTextStyles.recipeTitle),
+          Text("Ajouter une recette", style: AppTextStyles.recipeTitle(context)),
           TextField(
             controller: titleController,
             decoration: InputDecoration(labelText: "Nom de la recette"),
@@ -59,7 +60,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 Navigator.pop(context);
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary(context)),
             child: Text("Sauver recette", style: AppTextStyles.buttonText),
           ),
         ],

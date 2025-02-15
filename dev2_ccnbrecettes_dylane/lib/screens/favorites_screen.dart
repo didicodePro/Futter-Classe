@@ -1,38 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../theme/theme_provider.dart';
 import '../widgets/recipe_card.dart';
 
 class FavoritesScreen extends StatelessWidget {
-  final List<Map<String, String>> favoriteRecipes;
-  final Function(String) onToggleFavorite;
-
-  const FavoritesScreen({
-    super.key,
-    required this.favoriteRecipes,
-    required this.onToggleFavorite,
-  });
+  const FavoritesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Mes Favoris")),
-      body: favoriteRecipes.isEmpty
-          ? const Center(child: Text("Aucune recette favorite 😢"))
-          : Padding(
-              padding: const EdgeInsets.all(8),
-              child: ListView.builder(
-                itemCount: favoriteRecipes.length,
-                itemBuilder: (context, index) {
-                  final recipe = favoriteRecipes[index];
+    final theme = Provider.of<ThemeProvider>(context).themeData;
+    
+    // Exemple de liste de favoris (remplacer avec la vraie liste)
+    List<Map<String, String>> favoriteRecipes = [
+      {
+        "title": "Tarte aux fraises",
+        "description": "Une tarte aux fraises avec du fromage",
+        "category": "Dessert"
+      },
+    ];
 
-                  return RecipesCard(
-                    title: recipe["title"]!,
-                    description: recipe["description"]!,
-                    category: recipe["category"]!,
-                    isFavorite: true, // Toujours favori ici
-                    onFavoritePressed: () => onToggleFavorite(recipe["title"]!),
-                  );
-                },
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Favoris"),
+        backgroundColor: theme.primaryColor,
+      ),
+      body: favoriteRecipes.isEmpty
+          ? const Center(child: Text("Aucun favori pour le moment."))
+          : ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: favoriteRecipes.length,
+              itemBuilder: (context, index) {
+                return RecipesCard(
+                  title: favoriteRecipes[index]["title"]!,
+                  description: favoriteRecipes[index]["description"]!,
+                  category: favoriteRecipes[index]["category"]!,
+                  onFavoritePressed: () {
+                    // Ajouter ici la logique pour retirer des favoris
+                  },
+                  isFavorite: true, // Toujours favori ici
+                );
+              },
             ),
     );
   }

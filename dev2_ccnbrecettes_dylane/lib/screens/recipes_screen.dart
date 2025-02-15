@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 import '../widgets/recipe_card.dart';
 import 'add_recipe_screen.dart';
-import 'settings_screen.dart';
 
-class RecipeScreen extends StatefulWidget {
-  const RecipeScreen({super.key});
+class RecipesScreen extends StatefulWidget {
+  const RecipesScreen({super.key});
 
   @override
-  State<RecipeScreen> createState() => _RecipeScreenState();
+  State<RecipesScreen> createState() => _RecipesScreenState();
 }
 
-class _RecipeScreenState extends State<RecipeScreen> {
+class _RecipesScreenState extends State<RecipesScreen> {
   List<Map<String, String>> recipes = [
     {
       "title": "Tarte aux pommes",
@@ -65,17 +65,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("RECETTES CCNB"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
-              );
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -97,6 +86,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddRecipeDialog,
+        backgroundColor: AppColors.primary(context),
         child: const Icon(Icons.add),
       ),
     );

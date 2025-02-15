@@ -32,11 +32,16 @@ class RecipesCard extends StatelessWidget {
         contentPadding: const EdgeInsets.all(10),
         title: Text(
           title,
-          style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+          style:
+              theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(
-          description,
-          style: theme.textTheme.bodyMedium,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(description, style: theme.textTheme.bodyMedium),
+            SizedBox(height: 4), // Petit espace entre description et catégorie
+            Text("Catégorie: $category", style: theme.textTheme.bodyMedium),
+          ],
         ),
         trailing: IconButton(
           icon: Icon(

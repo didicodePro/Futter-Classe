@@ -7,20 +7,35 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Paramètres")),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text("Mode sombre/claire"),
-            trailing: Switch(
-              value: themeProvider.isDarkMode,
-              onChanged: (value) => themeProvider.toggleTheme(),
+      appBar: AppBar(
+        title: const Text("Paramètres"),
+        backgroundColor: context.watch<ThemeProvider>().themeData.primaryColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Thème",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-          ),
-        ],
+            Builder(
+              builder: (context) {
+                final themeProvider = context.watch<ThemeProvider>();
+
+                return SwitchListTile(
+                  title: const Text("Mode sombre"),
+                  value: themeProvider.isDarkMode,
+                  onChanged: (bool value) {
+                    themeProvider.toggleTheme();
+                  },
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/recipe_card.dart';
 import 'add_recipe_screen.dart';
-import '../theme/app_colors.dart';
-import 'favorites_screen.dart';
+import 'settings_screen.dart';
 
 class RecipeScreen extends StatefulWidget {
   const RecipeScreen({super.key});
@@ -13,11 +12,19 @@ class RecipeScreen extends StatefulWidget {
 
 class _RecipeScreenState extends State<RecipeScreen> {
   List<Map<String, String>> recipes = [
-    {"title": "Tarte aux pommes", "description": "Délicieuse tarte", "category": "Dessert"},
-    {"title": "Pizza maison", "description": "Pizza à la mozzarella", "category": "Plat"},
+    {
+      "title": "Tarte aux pommes",
+      "description": "Délicieuse tarte",
+      "category": "Dessert"
+    },
+    {
+      "title": "Pizza maison",
+      "description": "Pizza à la mozzarella",
+      "category": "Plat"
+    },
   ];
 
-  Set<String> favoriteRecipes = {}; // Stocke les titres des favoris
+  Set<String> favoriteRecipes = {}; // Stocke les favoris
 
   void _toggleFavorite(String title) {
     setState(() {
@@ -40,7 +47,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
         return AddRecipeScreen(
           onRecipeAdded: (title, description, category) {
             setState(() {
-              recipes.add({"title": title, "description": description, "category": category});
+              recipes.add({
+                "title": title,
+                "description": description,
+                "category": category
+              });
             });
           },
         );
@@ -50,29 +61,20 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Filtrer les recettes favorites
-    final favoriteRecipesList = recipes
-        .where((recipe) => favoriteRecipes.contains(recipe["title"]))
-        .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("RECETTES CCNB"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => FavoritesScreen(
-                    favoriteRecipes: favoriteRecipesList,
-                    onToggleFavorite: _toggleFavorite,
-                  ),
-                ),
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
               );
             },
-          )
+          ),
         ],
       ),
       body: Padding(
@@ -95,7 +97,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddRecipeDialog,
-        backgroundColor: AppColors.primary,
         child: const Icon(Icons.add),
       ),
     );

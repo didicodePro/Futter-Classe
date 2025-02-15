@@ -1,49 +1,51 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_text_styles.dart';
+import 'package:provider/provider.dart';
+import '../theme/theme_provider.dart';
 
 class RecipesCard extends StatelessWidget {
   final String title;
   final String description;
   final String category;
-  final bool isFavorite;
   final VoidCallback? onFavoritePressed;
-  final VoidCallback? onTap;
+  final bool isFavorite;
 
   const RecipesCard({
     super.key,
     required this.title,
     required this.description,
     required this.category,
-    required this.isFavorite,
     this.onFavoritePressed,
-    this.onTap,
+    required this.isFavorite,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Provider.of<ThemeProvider>(context).themeData;
+
     return Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      color: theme.cardColor, // Utilisation de la couleur du thème
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(10),
+        title: Text(
+          title,
+          style: theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
         ),
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(10),
-          title: Text(title, style: AppTextStyles.recipeTitle),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(description, style: AppTextStyles.recipeSubtitle),
-              SizedBox(
-                  height: 4), // Petit espace entre description et catégorie
-              Text("Catégorie: $category", style: AppTextStyles.recipeSubtitle),
-            ],
+        subtitle: Text(
+          description,
+          style: theme.textTheme.bodyMedium,
+        ),
+        trailing: IconButton(
+          icon: Icon(
+            isFavorite ? Icons.favorite : Icons.favorite_border,
+            color: isFavorite ? theme.primaryColor : Colors.grey,
           ),
-          trailing: IconButton(
-            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: isFavorite ? Colors.red : AppColors.textPrimary),
-            onPressed: onFavoritePressed,
-          ),
-        ));
+          onPressed: onFavoritePressed,
+        ),
+      ),
+    );
   }
 }

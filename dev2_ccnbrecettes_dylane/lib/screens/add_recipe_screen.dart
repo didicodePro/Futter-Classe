@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
 class AddRecipeScreen extends StatefulWidget {
@@ -60,7 +59,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 Navigator.pop(context);
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: Text("Sauver recette", style: AppTextStyles.buttonText),
           ),
         ],

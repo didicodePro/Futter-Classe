@@ -12,25 +12,12 @@ class RecipeScreen extends StatefulWidget {
 
 class _RecipeScreenState extends State<RecipeScreen> {
   List<Map<String, String>> recipes = [
-    {
-      "title": "Tarte aux pommes",
-      "description": "Une tarte aux pommes avec du fromage",
-      "category": "Dessert"
-    },
-    {
-      "title": "Tarte aux fraises",
-      "description": "Une tarte aux fraises avec du fromage",
-      "category": "Dessert"
-    },
-    {
-      "title": "Tarte aux noix",
-      "description": "Une tarte aux noix avec du fromage",
-      "category": "Dessert"
-    },
+    {"title": "Tarte aux pommes", "description": "Délicieuse tarte", "category": "Dessert"},
+    {"title": "Pizza maison", "description": "Pizza à la mozzarella", "category": "Plat"},
   ];
 
-  // Liste des recettes favorites
   Set<String> favoriteRecipes = {};
+  int _selectedIndex = 0; // 0 = Toutes les recettes, 1 = Favoris
 
   void _toggleFavorite(String title) {
     setState(() {
@@ -46,18 +33,14 @@ class _RecipeScreenState extends State<RecipeScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (context) {
         return AddRecipeScreen(
           onRecipeAdded: (title, description, category) {
             setState(() {
-              recipes.add({
-                "title": title,
-                "description": description,
-                "category": category
-              });
+              recipes.add({"title": title, "description": description, "category": category});
             });
           },
         );
@@ -67,33 +50,42 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("RECETTES CCNB"),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: recipes.length,
-            itemBuilder: (context, index) {
-              final recipe = recipes[index]; // Récupérer la recette actuelle
-              final isFavorite = favoriteRecipes.contains(recipe["title"]);
+    List<Map<String, String>> displayedRecipes =
+        _selectedIndex == 0 ? recipes : recipes.where((recipe) => favoriteRecipes.contains(recipe["title"])).toList();
 
-              return RecipesCard(
-                title: recipes[index]["title"]!,
-                description: recipes[index]["description"]!,
-                category: recipes[index]["category"]!,
-                onFavoritePressed: () =>
-                    _toggleFavorite(recipes[index]["title"]!),
-                isFavorite: isFavorite, // Nouvelle variable pour gérer l'icône
-              );
-            },
-          ),
+    return Scaffold(
+      appBar: AppBar(title: const Text("RECETTES CCNB")),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: ListView.builder(
+          itemCount: displayedRecipes.length,
+          itemBuilder: (context, index) {
+            final recipe = displayedRecipes[index];
+            final isFavorite = favoriteRecipes.contains(recipe["title"]);
+
+            return RecipesCard(
+              title: recipe["title"]!,
+              description: recipe["description"]!,
+              category: recipe["category"]!,
+              isFavorite: isFavorite,
+              onFavoritePressed: () => _toggleFavorite(recipe["title"]!),
+            );
+          },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _showAddRecipeDialog,
-          backgroundColor: AppColors.primary,
-          child: const Icon(Icons.add),
-        ));
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddRecipeDialog,
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) => setState(() => _selectedIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Toutes"),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favoris"),
+        ],
+      ),
+    );
   }
 }

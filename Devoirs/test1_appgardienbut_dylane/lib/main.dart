@@ -215,18 +215,20 @@ void _showMatchHistory() {
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Nom du gardien de but',
+                  labelText: 'Nom du gardien',
                   border: UnderlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
                 ),
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: selectedTeam,
                 decoration: const InputDecoration(
-                  labelText: 'Equipe',
+                  labelText: 'Équipe',
                   border: UnderlineInputBorder(),
+                  prefixIcon: Icon(Icons.house),
                 ),
-                items: ['Equipe A', 'Equipe B', 'Equipe C', 'Equipe D']
+                items: ['Équipe A', 'Équipe B', 'Équipe C', 'Équipe D']
                     .map((team) => DropdownMenuItem(value: team, child: Text(team)))
                     .toList(),
                 onChanged: (value) => setState(() => selectedTeam = value),
@@ -256,10 +258,11 @@ void _showMatchHistory() {
               DropdownButtonFormField<String>(
                 value: opposingTeam,
                 decoration: const InputDecoration(
-                  labelText: 'Equipe visiteur',
+                  labelText: 'Équipe adverse',
                   border: UnderlineInputBorder(),
+                  prefixIcon: Icon(Icons.sports_hockey),
                 ),
-                items: ['Equipe A', 'Equipe B', 'Equipe C', 'Equipe D']
+                items: ['Équipe A', 'Équipe B', 'Équipe C', 'Équipe D']
                     .map((team) => DropdownMenuItem(value: team, child: Text(team)))
                     .toList(),
                 onChanged: (value) => setState(() => opposingTeam = value),

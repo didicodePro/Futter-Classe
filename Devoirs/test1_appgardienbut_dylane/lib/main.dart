@@ -42,7 +42,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-       debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: 'Stats de Gardien de buts',
       theme: ThemeData(
         primaryColor: AppColors.lightPrimary,
@@ -85,6 +85,34 @@ class _GoalkeeperStatsPageState extends State<GoalkeeperStatsPage> {
   DateTime selectedDate = DateTime(2025, 2, 12);
   TimeOfDay selectedTime = const TimeOfDay(hour: 21, minute: 5);
 
+  void _selectDate() async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+      });
+    }
+  }
+
+  void _selectTime() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+
+    if (pickedTime != null && pickedTime != selectedTime) {
+      setState(() {
+        selectedTime = pickedTime;
+      });
+    }
+  }
+
   void _showStats() {
     showDialog(
       context: context,
@@ -108,7 +136,8 @@ class _GoalkeeperStatsPageState extends State<GoalkeeperStatsPage> {
               const SizedBox(height: 16),
               Text('Lancés reçu: $shotsAgainst'),
               Text('Buts contre: $goalsAgainst'),
-              Text('Pourcentage d\'arrêt: ${_calculateSavePercentage().toStringAsFixed(2)}%'),
+              Text(
+                  'Pourcentage d\'arrêt: ${_calculateSavePercentage().toStringAsFixed(2)}%'),
               Text('Date: ${selectedDate.toString().substring(0, 10)}'),
               Text('Heure: ${selectedTime.format(context)}'),
               Text('Equipe local: $selectedTeam'),
@@ -126,61 +155,63 @@ class _GoalkeeperStatsPageState extends State<GoalkeeperStatsPage> {
     );
   }
 
-void _showMatchHistory() {
-  showModalBottomSheet(
-    context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    ),
-    builder: (context) => Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Center(
-            child: Text(
-              'Historique des matchs',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          Flexible(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ...listeMatchs.map((match) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${match.dateTime.toString().substring(0, 10)} - ${match.homeTeam} vs ${match.awayTeam}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Gardien de but: ${match.goalieName} | Arrêts: ${match.shotsAgainst - match.goalsAgainst} | '
-                            'Buts contre: ${match.goalsAgainst} | % Arrêts: ${match.savePercentage.toStringAsFixed(2)}%',
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                  if (listeMatchs.isEmpty)
-                    const Text('Aucun match enregistré'),
-                ],
-              ),
-            ),
-          ),
-        ],
+  void _showMatchHistory() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-    ),
-  );
-}
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+              child: Text(
+                'Historique des matchs',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ...listeMatchs.map((match) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${match.dateTime.toString().substring(0, 10)} - ${match.homeTeam} vs ${match.awayTeam}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Gardien de but: ${match.goalieName} | Arrêts: ${match.shotsAgainst - match.goalsAgainst} | '
+                              'Buts contre: ${match.goalsAgainst} | % Arrêts: ${match.savePercentage.toStringAsFixed(2)}%',
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    if (listeMatchs.isEmpty)
+                      const Text('Aucun match enregistré'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   double _calculateSavePercentage() {
     if (shotsAgainst == 0) return 0;
     return ((shotsAgainst - goalsAgainst) / shotsAgainst) * 100;
@@ -229,7 +260,8 @@ void _showMatchHistory() {
                   prefixIcon: Icon(Icons.house),
                 ),
                 items: ['Équipe A', 'Équipe B', 'Équipe C', 'Équipe D']
-                    .map((team) => DropdownMenuItem(value: team, child: Text(team)))
+                    .map((team) =>
+                        DropdownMenuItem(value: team, child: Text(team)))
                     .toList(),
                 onChanged: (value) => setState(() => selectedTeam = value),
               ),
@@ -242,14 +274,20 @@ void _showMatchHistory() {
                 ),
                 child: Column(
                   children: [
-                    Text(
-                      'Date du match: ${selectedDate.toString().substring(0, 10)}',
-                      style: TextStyle(color: AppColors.lightPrimary),
+                    TextButton(
+                      onPressed: _selectDate,
+                      child: Text(
+                        'Date du match: ${selectedDate.toString().substring(0, 10)}',
+                        style: TextStyle(color: AppColors.lightPrimary),
+                      ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      'Temps du match: ${selectedTime.format(context)}',
-                      style: TextStyle(color: AppColors.lightPrimary),
+                    TextButton(
+                      onPressed: _selectTime,
+                      child: Text(
+                        'Heure du match: ${selectedTime.format(context)}',
+                        style: TextStyle(color: AppColors.lightPrimary),
+                      ),
                     ),
                   ],
                 ),
@@ -263,7 +301,8 @@ void _showMatchHistory() {
                   prefixIcon: Icon(Icons.sports_hockey),
                 ),
                 items: ['Équipe A', 'Équipe B', 'Équipe C', 'Équipe D']
-                    .map((team) => DropdownMenuItem(value: team, child: Text(team)))
+                    .map((team) =>
+                        DropdownMenuItem(value: team, child: Text(team)))
                     .toList(),
                 onChanged: (value) => setState(() => opposingTeam = value),
               ),
@@ -280,7 +319,8 @@ void _showMatchHistory() {
                     backgroundColor: AppColors.lightSecondary,
                     radius: 15,
                     child: IconButton(
-                      icon: const Icon(Icons.remove, size: 16, color: Colors.white),
+                      icon: const Icon(Icons.remove,
+                          size: 16, color: Colors.white),
                       onPressed: () {
                         if (shotsAgainst > 0) {
                           setState(() => shotsAgainst--);
@@ -299,7 +339,8 @@ void _showMatchHistory() {
                     backgroundColor: AppColors.lightPrimary,
                     radius: 15,
                     child: IconButton(
-                      icon: const Icon(Icons.add, size: 16, color: Colors.white),
+                      icon:
+                          const Icon(Icons.add, size: 16, color: Colors.white),
                       onPressed: () => setState(() => shotsAgainst++),
                     ),
                   ),
@@ -318,7 +359,8 @@ void _showMatchHistory() {
                     backgroundColor: AppColors.lightSecondary,
                     radius: 15,
                     child: IconButton(
-                      icon: const Icon(Icons.remove, size: 16, color: Colors.white),
+                      icon: const Icon(Icons.remove,
+                          size: 16, color: Colors.white),
                       onPressed: () {
                         if (goalsAgainst > 0) {
                           setState(() => goalsAgainst--);
@@ -337,7 +379,8 @@ void _showMatchHistory() {
                     backgroundColor: AppColors.lightPrimary,
                     radius: 15,
                     child: IconButton(
-                      icon: const Icon(Icons.add, size: 16, color: Colors.white),
+                      icon:
+                          const Icon(Icons.add, size: 16, color: Colors.white),
                       onPressed: () => setState(() => goalsAgainst++),
                     ),
                   ),
@@ -356,7 +399,9 @@ void _showMatchHistory() {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  if (_nameController.text.isNotEmpty && selectedTeam != null && opposingTeam != null) {
+                  if (_nameController.text.isNotEmpty &&
+                      selectedTeam != null &&
+                      opposingTeam != null) {
                     final match = Match(
                       goalieName: _nameController.text,
                       homeTeam: selectedTeam!,
@@ -375,7 +420,8 @@ void _showMatchHistory() {
                     _showMatchHistory();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Veuillez remplir tous les champs')),
+                      const SnackBar(
+                          content: Text('Veuillez remplir tous les champs')),
                     );
                   }
                 },
@@ -403,7 +449,10 @@ void _showMatchHistory() {
           goalsAgainst = 0;
         }),
         backgroundColor: AppColors.lightPrimary,
-        child: const Icon(Icons.refresh, color: Colors.white,),
+        child: const Icon(
+          Icons.refresh,
+          color: Colors.white,
+        ),
       ),
     );
   }

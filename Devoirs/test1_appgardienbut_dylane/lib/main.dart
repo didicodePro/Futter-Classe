@@ -1,39 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview_plus/device_preview_plus.dart';
+import './utils/app_colors.dart';
+import './models/match.dart';
 
 void main() {
   runApp(DevicePreview(enabled: true, builder: (context) => const MainApp()));
-}
-
-class AppColors {
-  static const Color lightPrimary = Color(0xFF5D5DA8);
-  static const Color lightSecondary = Color(0xFF8665B1);
-  static const Color lightBackground = Color(0xFFF8F8F8);
-  static const Color lightTextPrimary = Colors.black87;
-  static const Color lightTextSecondary = Colors.grey;
-}
-
-class Match {
-  final String goalieName;
-  final String homeTeam;
-  final String awayTeam;
-  final DateTime dateTime;
-  final int shotsAgainst;
-  final int goalsAgainst;
-
-  Match({
-    required this.goalieName,
-    required this.homeTeam,
-    required this.awayTeam,
-    required this.dateTime,
-    required this.shotsAgainst,
-    required this.goalsAgainst,
-  });
-
-  double get savePercentage {
-    if (shotsAgainst == 0) return 0;
-    return ((shotsAgainst - goalsAgainst) / shotsAgainst) * 100;
-  }
 }
 
 class MainApp extends StatelessWidget {

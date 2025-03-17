@@ -7,8 +7,10 @@ environment:
   sdk: ^3.7.0
 
 dependencies:
+  device_preview: ^1.2.0
   flutter:
     sdk: flutter
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

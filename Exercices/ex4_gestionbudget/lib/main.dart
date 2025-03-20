@@ -52,8 +52,8 @@ class GestionBudgetHomeState extends State<GestionBudgetHome> {
 
   String _titreDepense = "";
   double _montantDepense = 0.0;
-  String _categorieDepense = "Essence";
-  DateTime _choisirDate = DateTime.now();
+  final String _categorieDepense = "Essence";
+  final DateTime _choisirDate = DateTime.now();
 
   double get _depensesTotales =>
       _depenses.fold(0.0, (sum, item) => sum + (item['montantDepense'] ?? 0.0));

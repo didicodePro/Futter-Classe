@@ -48,7 +48,7 @@ class ListRowDepense extends StatelessWidget {
           leading: CircleAvatar(
             backgroundColor: AppColors.buttonBackground,
             foregroundColor: AppColors.buttonTextColor,
-            child: Text('${depenseObj['montantDepense'].toString()}'),
+            child: Text(depenseObj['montantDepense'].toString()),
           ),
           title: Text(
             depenseObj['titreDepense'],

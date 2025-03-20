@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "663291565024",
+    "project_id": "ex10workout-56a23",
+    "storage_bucket": "ex10workout-56a23.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663291565024:android:05ef78a9f432b9ef129185",
+        "android_client_info": {
+          "package_name": "com.example.ex10_workout_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk4c6RV8BAiDIqZQoXp4d1ix49TYWKeD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757498822769",
+    "project_id": "test2-garagesales",
+    "storage_bucket": "test2-garagesales.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757498822769:android:27acd8c9a79702f0e35bd0",
+        "android_client_info": {
+          "package_name": "com.example.test2_garagesale_dylane"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrusz9_9yrYu6vPIjE-0hXcf3a4DwgGdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

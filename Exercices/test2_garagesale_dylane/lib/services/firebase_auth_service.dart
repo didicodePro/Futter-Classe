@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import '../utils/firebase_errors.dart'; 
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,8 +11,11 @@ class FirebaseAuthService {
         password: password,
       );
       return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      final message = getAuthErrorMessage(e.code);
+      throw Exception(message);
     } catch (e) {
-      throw Exception("Erreur de connexion : ${e.toString()}");
+      throw Exception('Erreur inconnue : ${e.toString()}');
     }
   }
 
@@ -22,8 +26,11 @@ class FirebaseAuthService {
         password: password,
       );
       return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      final message = getAuthErrorMessage(e.code);
+      throw Exception(message);
     } catch (e) {
-      throw Exception("Erreur d'inscription : ${e.toString()}");
+      throw Exception('Erreur inconnue : ${e.toString()}');
     }
   }
 

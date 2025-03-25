@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../services/firebase_auth_service.dart';
 
@@ -21,9 +22,13 @@ class _SignupScreenState extends State<SignupScreen> {
         _passwordController.text.trim(),
       );
       Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message ?? 'Une erreur est survenue';
+      });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = 'Une erreur inattendue est survenue';
       });
     }
     setState(() => _isLoading = false);

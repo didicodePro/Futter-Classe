@@ -20,7 +20,12 @@ class AddGarageSaleState extends State<AddGarageSale> {
   String? imageUrl;
   final FirebaseService _firebaseService = FirebaseService();
 
-  final List<String> categories = ["Outils", "Vêtements", "Articles d’enfants", "Électronique"];
+  final List<String> categories = [
+    "Outils",
+    "Vêtements",
+    "Articles d'enfants",
+    "Électronique",
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
@@ -62,18 +67,24 @@ class AddGarageSaleState extends State<AddGarageSale> {
         id: Random().nextInt(1000).toString(),
         address: garagesaleData['address'] ?? '',
         city: garagesaleData['city'] ?? '',
-        date: selectedDate != null
-            ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-            : "Non spécifiée",
-        startTime: startTime != null ? startTime!.format(context) : "Non spécifiée",
+        date:
+            selectedDate != null
+                ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                : "Non spécifiée",
+        startTime:
+            startTime != null ? startTime!.format(context) : "Non spécifiée",
         endTime: endTime != null ? endTime!.format(context) : "Non spécifiée",
         notes: selectedCategory ?? "Autre",
-        imagePath: imageUrl ?? "", 
+        imagePath: imageUrl ?? "",
       );
 
       await _firebaseService.addGarageSale(newSale);
 
-      Navigator.pop(context);
+      Navigator.pushReplacementNamed(
+        // ignore: use_build_context_synchronously
+        context,
+        '/home',
+      ); 
     }
   }
 
@@ -164,12 +175,13 @@ class AddGarageSaleState extends State<AddGarageSale> {
                       selectedCategory = newValue;
                     });
                   },
-                  items: categories.map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
-                    );
-                  }).toList(),
+                  items:
+                      categories.map((category) {
+                        return DropdownMenuItem(
+                          value: category,
+                          child: Text(category),
+                        );
+                      }).toList(),
                 ),
 
                 SizedBox(height: 10),
@@ -177,8 +189,11 @@ class AddGarageSaleState extends State<AddGarageSale> {
                 // ✅ Champ pour entrer l’URL de l’image
                 TextFormField(
                   decoration: InputDecoration(labelText: 'URL de l’image'),
-                  validator: (value) =>
-                      value!.isEmpty ? "Veuillez entrer une URL d’image" : null,
+                  validator:
+                      (value) =>
+                          value!.isEmpty
+                              ? "Veuillez entrer une URL d’image"
+                              : null,
                   onSaved: (value) => imageUrl = value,
                 ),
 
